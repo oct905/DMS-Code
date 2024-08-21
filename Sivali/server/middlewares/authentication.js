@@ -1,5 +1,5 @@
 const { verifyToken } = require("../utils/jwt")
-const { User } = require("../models")
+const { Company } = require("../models")
 
 const authentication = async (req, res, next) => {
     try {
@@ -7,9 +7,11 @@ const authentication = async (req, res, next) => {
         if (!authorization) throw { name: "Unauthorized" }
 
         const access_token = authorization.split(' ')[1]
+        if (!access_token) throw { name: "Unauthorized" }
+
         const payload = verifyToken(access_token)
 
-        const user = await User.findByPk(payload.id)
+        const user = await Company.findByPk(payload.id)
         if (!user) throw { name: "Unauthorized" }
 
         req.loginInfo = {
@@ -18,10 +20,10 @@ const authentication = async (req, res, next) => {
         }
         next()
     } catch (error) {
-        console.log(error);
+        console.log(error, `<<< AUTHENTICATION`);
 
         next(error)
     }
 }
 
-module.exports = { authentication }
+module.exports = authentication 
