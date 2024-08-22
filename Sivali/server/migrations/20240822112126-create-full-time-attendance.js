@@ -2,36 +2,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Leaves', {
+    await queryInterface.createTable('FullTimeAttendances', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      type: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Type is required"
-          },
-          notEmpty: {
-            msg: "Type is required"
-          }
-        }
-      },
-      fullName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Full name is required"
-          },
-          notEmpty: {
-            msg: "Full name is required"
-          }
-        }
       },
       date: {
         type: Sequelize.DATEONLY,
@@ -45,45 +21,101 @@ module.exports = {
           }
         }
       },
-      description: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Description is required"
+            msg: "Name is required"
           },
           notEmpty: {
-            msg: "Description is required"
+            msg: "Name is required"
           }
         }
       },
-      created: {
-        type: Sequelize.DATEONLY,
+      shiftIn: {
+        type: Sequelize.TIME,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Created date is required"
+            msg: "Shift In time is required"
           },
           notEmpty: {
-            msg: "Created date is required"
+            msg: "Shift In time is required"
           }
         }
       },
-      status: {
+      checkIn: {
+        type: Sequelize.TIME,
+      },
+      shiftOut: {
+        type: Sequelize.TIME,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Shift Out time is required"
+          },
+          notEmpty: {
+            msg: "Shift Out time is required"
+          }
+        }
+      },
+      checkOut: {
+        type: Sequelize.TIME,
+        allowNull: true
+      },
+      jobName: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Status is required"
+            msg: "Job name is required"
           },
           notEmpty: {
-            msg: "Status is required"
+            msg: "Job name is required"
           }
         }
+      },
+      jobDescription: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Job description is required"
+          },
+          notEmpty: {
+            msg: "Job description is required"
+          }
+        }
+      },
+      locationIn: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Location In is required"
+          },
+          notEmpty: {
+            msg: "Location In is required"
+          }
+        }
+      },
+      locationOut: {
+        type: Sequelize.STRING,
+      },
+      photoIn: {
+        type: Sequelize.STRING,
+      },
+      photoOut: {
+        type: Sequelize.STRING,
       },
       CompanyId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Companies',
+          key: 'id'
+        },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         validate: {
@@ -93,11 +125,7 @@ module.exports = {
           notEmpty: {
             msg: "Company ID is required"
           }
-        },
-        references: {
-          model: 'Companies',
-          key: 'id'
-        },
+        }
       },
       createdAt: {
         allowNull: false,
@@ -110,6 +138,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Leaves');
+    await queryInterface.dropTable('FullTimeAttendances');
   }
 };

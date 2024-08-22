@@ -84,6 +84,8 @@ module.exports = {
       CompanyId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
         validate: {
           notNull: {
             msg: "Company ID is required"

@@ -2,51 +2,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Leaves', {
+    await queryInterface.createTable('AttendanceTypes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      type: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           notNull: {
-            msg: "Type is required"
+            msg: "Name is required"
           },
           notEmpty: {
-            msg: "Type is required"
-          }
-        }
-      },
-      fullName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Full name is required"
-          },
-          notEmpty: {
-            msg: "Full name is required"
-          }
-        }
-      },
-      date: {
-        type: Sequelize.DATEONLY,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Date is required"
-          },
-          notEmpty: {
-            msg: "Date is required"
+            msg: "Name is required"
           }
         }
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
         validate: {
           notNull: {
@@ -57,33 +34,26 @@ module.exports = {
           }
         }
       },
-      created: {
-        type: Sequelize.DATEONLY,
+      mandatoryLocation: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
         validate: {
           notNull: {
-            msg: "Created date is required"
+            msg: "Mandatory location is required"
           },
           notEmpty: {
-            msg: "Created date is required"
-          }
-        }
-      },
-      status: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Status is required"
-          },
-          notEmpty: {
-            msg: "Status is required"
+            msg: "Mandatory location is required"
           }
         }
       },
       CompanyId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Companies',
+          key: 'id'
+        },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         validate: {
@@ -93,23 +63,21 @@ module.exports = {
           notEmpty: {
             msg: "Company ID is required"
           }
-        },
-        references: {
-          model: 'Companies',
-          key: 'id'
-        },
+        }
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Leaves');
+    await queryInterface.dropTable('AttendanceTypes');
   }
 };
